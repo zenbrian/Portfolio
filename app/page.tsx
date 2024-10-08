@@ -1,7 +1,7 @@
 import Hero from "@/components/Hero";
 import { FloatingNav } from "@/components/ui/FloatingNav";
 import Grid from "@/components/Grid";
-import Image from "next/image";
+//import Image from "next/image";
 import { FaHome } from "react-icons/fa";
 
 export default function Home() {
