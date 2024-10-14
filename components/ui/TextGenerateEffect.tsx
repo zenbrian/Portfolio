@@ -1,5 +1,5 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { motion, stagger, useAnimate } from "framer-motion";
 import { cn } from "@/lib/utils/cn";
 
@@ -15,19 +15,41 @@ export const TextGenerateEffect = ({
   duration?: number;
 }) => {
   const [scope, animate] = useAnimate();
-  let wordsArray = words.split(" ");
+  const containerRef = useRef<HTMLDivElement>(null);
+  let wordsArray = words.split(""); // 將 words 分割成單個字母
+
   useEffect(() => {
-    animate(
-      "span",
-      {
-        opacity: 1,
-        filter: filter ? "blur(0px)" : "none",
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            animate(
+              "span",
+              {
+                opacity: 1,
+                filter: filter ? "blur(0px)" : "none",
+              },
+              {
+                duration: duration ? duration : 1,
+                delay: stagger(0.1), // 調整 stagger 的參數，使每個字母逐個顯示
+              }
+            );
+            observer.disconnect(); // 停止觀察
+          }
+        });
       },
-      {
-        duration: duration ? duration : 1,
-        delay: stagger(0.2),
-      }
+      { threshold: 0.1 }
     );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => {
+      if (containerRef.current) {
+        observer.unobserve(containerRef.current);
+      }
+    };
   }, [scope.current]);
 
   const renderWords = () => {
@@ -37,10 +59,9 @@ export const TextGenerateEffect = ({
           return (
             <motion.span
               key={word + idx}
-              className={`${idx >3 ? "text-purple":
-                "dark:text-white text-black"} opacity-0`} //idx>3 is the condition text turn to purple
+              className={"dark:text-white text-black opacity-0"} 
             >
-              {word}{" "}
+              {word}
             </motion.span>
           );
         })}
@@ -49,9 +70,9 @@ export const TextGenerateEffect = ({
   };
 
   return (
-    <div className={cn("font-bold", className)}>
+    <div className={cn("font-bold", className)} ref={containerRef}>
       <div className="mt-4">
-        <div className=" dark:text-white text-black  leading-snug tracking-wide">
+        <div className="dark:text-white text-black leading-snug tracking-wide">
           {renderWords()}
         </div>
       </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { BentoGrid, BentoGridItem } from './ui/BentoGrid'
 import { gridItems } from '@/data'
+import { TextGenerateEffect } from './ui/TextGenerateEffect'
 // 檔案的最上方加入
 /* eslint-disable @typescript-eslint/no-unused-vars */
 const Grid = () => {
@@ -21,6 +22,7 @@ const Grid = () => {
           />
           ))}
       </BentoGrid>
+    
     </section>
   )
 }
