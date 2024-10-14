@@ -80,7 +80,7 @@ const Hero = () => {
         {/*個人照*/}
         <div className="rounded-full bg-[#181818] w-[250px] h-[250px] lg:w-[400px] lg:h-[400px] relative overflow-hidden mx-auto lg:mx-0">
           <Image
-            src="/images/.png"
+            src="/images/me.png"
             alt="hero image"
             className="absolute w-full h-full object-cover"
             layout="fill"
